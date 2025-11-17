@@ -1,4 +1,4 @@
-# Custom_PDF_Viewer
+# Custom PDF Viewer
 Barebones PDF Viewer that attempts to simplify the User Interface of viewing a PDF. Includes the most basic features such as zooming, rotating, and opening a new pdf. Page turning is supported with keyboard (through pressing the left/right arrow keys or the A, D keys). This also supports opening new PDFs directly from File Explorer.
 
 This was created with PyQT (for User Interfaces) and PyMuPDF (for reading the PDF).
