@@ -1,5 +1,10 @@
 # Custom PDF Viewer
-Barebones PDF Viewer that attempts to simplify the User Interface of viewing a PDF. Includes the most basic features such as zooming, rotating, and opening a new pdf. Page turning is supported with keyboard (through pressing the left/right arrow keys or the A, D keys). This also supports zooming in and zooming out with CTRL + Scroll wheel. This also supports opening new PDFs directly from File Explorer.
+Barebones PDF Viewer that attempts to simplify the User Interface of viewing a PDF. Includes the most basic features such as zooming, rotating, and opening a new pdf. 
+Some extra features are supported as well:
+- Editing the current page number by hovering, clicking, and typing a new number.
+- Page turning with keyboard controls (through pressing the left/right arrow keys or the A, D keys).
+- Zooming in and zooming out with LCTRL + Scroll Wheel.
+- Opening PDFs directly from File Explorer (through Open With... and clicking the option to always open PDF files with this program.)
 
 This was created with PyQT (for User Interfaces) and PyMuPDF (for reading the PDF).
 
