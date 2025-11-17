@@ -13,13 +13,15 @@ from PyQt6.QtWidgets import (
     QScrollArea,
 )
 
-from PyQt6.QtCore import Qt, QSize
+from PyQt6.QtCore import Qt, QSize, QEvent
 from PyQt6.QtGui import QTransform, QPixmap, QIcon, QPalette, QColor
+
 from sys import argv
 import os
+
 import ui_config as uic #ui_config.py
 import pdf_reader as pdf_r #pdf_reader.py
-import bookmark as pdf_b
+import bookmark as pdf_b #bookmark.py
 
 base_directory = os.path.dirname(__file__)
 ui_config = uic.UI_Config
@@ -54,6 +56,7 @@ class PDF_Viewer_App(QWidget):
         self.resize(ui_config.width, ui_config.height)
 
         self.update_config_from_pdf()
+        self.ctrl_press = False
 
         self.create_widgets()
         self.design_widgets()
@@ -221,6 +224,13 @@ class PDF_Viewer_App(QWidget):
             self.decrement_page_count()
         elif key == Qt.Key.Key_Right or key == Qt.Key.Key_D:
             self.increment_page_count()
+        if key == Qt.Key.Key_Control:
+            self.ctrl_press = True
+    
+    def keyReleaseEvent(self, event):
+        key = event.key()
+        if key == Qt.Key.Key_Control:
+            self.ctrl_press = False
 
     def update_config_from_pdf(self):
         ui_config.update_zoom_lim(self.size())
@@ -326,6 +336,15 @@ class PDF_Viewer_App(QWidget):
 
             self.page_number_label.setText(str(ui_config.current_page_number))
             self.page_limit_label.setText(str(ui_config.max_page_number))
+
+    def wheelEvent(self, event):
+        if not self.ctrl_press:
+            return
+        delta = event.angleDelta().y()
+        if delta > 0:
+            self.increment_page_zoom()
+        else:
+            self.decrement_page_zoom()
 
 class HomePage(QWidget):
     def __init__(self):
