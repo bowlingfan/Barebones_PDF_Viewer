@@ -1,10 +1,9 @@
 from PyQt6.QtGui import QPixmap, QImage
 import fitz
-import re
 
 class PDF_Reader():
     def __init__(self, file_name=""):
-        """0 = VALID, 1 = FAILED, 2 = WARNING"""
+        """STATUS CODES: 0 = VALID, 1 = FAILED, 2 = WARNING"""
         self.status = 0
         self.error_msg = None
         self.file_name = file_name
@@ -16,7 +15,7 @@ class PDF_Reader():
             self.document.close()
     
     """
-    debug: printing the object will print the status and message.
+    debug purposes: printing the object will print the status and message.
     """
     def __str__(self):
         return f'status: [{self.status}], \n\tmessage: {self.error_msg}'

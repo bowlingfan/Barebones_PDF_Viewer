@@ -23,7 +23,9 @@ import ui_config as uic #ui_config.py
 import pdf_reader as pdf_r #pdf_reader.py
 import bookmark as pdf_b #bookmark.py
 
+# when building, prevents issues with icons not showing up.
 base_directory = os.path.dirname(__file__)
+# used for more than one class
 ui_config = uic.UI_Config
 
 class LogoPushButton(QPushButton):
@@ -65,6 +67,9 @@ class PDF_Viewer_App(QWidget):
 
         self.update_page_displays()
 
+    """
+    Main UI Functionality: Creating Widgets, designing them, designing layouts and connecting PyQT events (through PyQT slots.)
+    """
     def create_widgets(self):
         self.open_new_file_button = LogoPushButton()
         self.bookmark_button = LogoPushButton()
@@ -74,11 +79,6 @@ class PDF_Viewer_App(QWidget):
 
         self.page_number_label = QLineEdit(str(ui_config.current_page_number))
         self.page_limit_label = QLabel(str(ui_config.max_page_number))
-        self.page_number_label.setMaxLength(len(str(ui_config.max_page_number)))
-        self.page_number_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        self.page_number_label.setSizePolicy(QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding)
-        self.page_number_label.setMinimumWidth(50)
-        self.page_number_label.setMaximumWidth(75)
 
         self.zoom_in_button = LogoPushButton("+")
         self.zoom_out_button = LogoPushButton("-")
@@ -90,28 +90,12 @@ class PDF_Viewer_App(QWidget):
         self.page_display_2 = QLabel("Right Page")
 
     def design_widgets(self):
-        self.setStyleSheet(
-        """               
-            QScrollBar {
-                width: 5px;
-                height: 5px;
-            }
-
-            QLineEdit {
-                font-size: 17px;
-                background-color: transparent;
-                border: solid #0044BA;
-                border-width: 0px 0px 1px 0px;
-            }
-
-            QLineEdit:hover {
-                background-color: #DBDBDB;
-            }
-        """
-        )
-
-        self.open_new_file_button.setStyleSheet(""" QPushButton { border: None; } QPushButton:hover {background-color: #DBDBDB; color: white; } """)
-        self.bookmark_button.setStyleSheet(""" QPushButton { border: None; } QPushButton:hover {background-color: #DBDBDB; color: white; } """)
+        # Modify Widgets
+        self.page_number_label.setMaxLength(len(str(ui_config.max_page_number)))
+        self.page_number_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.page_number_label.setSizePolicy(QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding)
+        self.page_number_label.setMinimumWidth(50)
+        self.page_number_label.setMaximumWidth(75)
 
         self.open_new_file_button.setToolTip("Open New PDF")
         self.bookmark_button.setToolTip("Bookmark Page")
@@ -138,15 +122,31 @@ class PDF_Viewer_App(QWidget):
         self.rotate_left_button.setIconSize(QSize(self.rotate_left_button.width(), 30))
         self.rotate_right_button.setIconSize(QSize(self.rotate_right_button.width(), 30))
 
-    def design_layouts(self):
-        scroll_area = QScrollArea(self)
-        scroll_area.setWidgetResizable(True)
-        scroll_area.setStyleSheet("""
-            QScrollArea {
-                border: solid #000000;
-                border-width: 1px 0px 0px 0px;
+        # Style Sheet setting for Widgets
+        self.setStyleSheet(
+        """               
+            QScrollBar {
+                width: 5px;
+                height: 5px;
             }
-        """)
+
+            QLineEdit {
+                font-size: 17px;
+                background-color: transparent;
+                border: solid #0044BA;
+                border-width: 0px 0px 1px 0px;
+            }
+
+            QLineEdit:hover {
+                background-color: #DBDBDB;
+            }
+        """
+        )
+
+        self.open_new_file_button.setStyleSheet(""" QPushButton { border: None; } QPushButton:hover {background-color: #DBDBDB; color: white; } """)
+        self.bookmark_button.setStyleSheet(""" QPushButton { border: None; } QPushButton:hover {background-color: #DBDBDB; color: white; } """)
+
+    def design_layouts(self):
         self.main_layout = QVBoxLayout()
 
         # header controls
@@ -190,6 +190,10 @@ class PDF_Viewer_App(QWidget):
         self.header_controls.addLayout(self.zoom_controls, 3)
 
         # page display
+        scroll_area = QScrollArea(self)
+        scroll_area.setWidgetResizable(True)
+        scroll_area.setStyleSheet(""" QScrollArea { border: solid #000000; border-width: 1px 0px 0px 0px; } """)
+
         self.page_display = QWidget()
         page_display_layout = QHBoxLayout()
 
@@ -214,6 +218,9 @@ class PDF_Viewer_App(QWidget):
         self.zoom_out_button.clicked.connect(self.decrement_page_zoom)
         self.bookmark_button.clicked.connect(self.bookmark_clicked)
     
+    """
+    PyQT Supported Events Override
+    """
     def resizeEvent(self, window):
         ui_config.update_zoom_lim(window.size())
         self.update_page_displays()
@@ -232,27 +239,14 @@ class PDF_Viewer_App(QWidget):
         if key == Qt.Key.Key_Control:
             self.ctrl_press = False
 
-    def update_config_from_pdf(self):
-        ui_config.update_zoom_lim(self.size())
-        ui_config.current_page_number = 1
-        ui_config.max_page_number = self.pdf.get_max_pages()
-
-    def update_page_displays(self):
-        self.page_display_1.clear(); self.page_display_2.clear()
-        page_number = ui_config.current_page_number-1
-        page_1 = self.pdf.get_page_pixmap(page_number*2, ui_config.dpi_zoom)
-        page_2 = self.pdf.get_page_pixmap(page_number*2+1, ui_config.dpi_zoom)
-        if page_1:
-            self.page_display_1.setPixmap(page_1)
-        if page_2:
-            self.page_display_1.setAlignment(Qt.AlignmentFlag.AlignRight | Qt.AlignmentFlag.AlignVCenter)
-            self.page_display_2.setVisible(True)
-            self.page_display_2.setPixmap(page_2)
-        else:
-            self.page_display_1.setAlignment(Qt.AlignmentFlag.AlignCenter)
-            self.page_display_2.setVisible(False)
+    def wheelEvent(self, event):
+        if not self.ctrl_press:
+            return
+        self.zoom_page_scroll(event.angleDelta().y())
     
-    # custom events for UI
+    """
+    Custom Events that are used to slot an event for specific PyQT widgets like QPushButton/QLineEdit
+    """
     def increment_page_count(self):
         ui_config.current_page_number = min(ui_config.current_page_number+1, ui_config.max_page_number)
         self.page_number_label.setText(str(ui_config.current_page_number))
@@ -292,23 +286,13 @@ class PDF_Viewer_App(QWidget):
         new_directory = QFileDialog()
         new_directory.setFileMode(QFileDialog.FileMode.ExistingFile)
         new_directory.setNameFilter("*.pdf")
+
         if (new_directory.exec()):
-            ui_config.current_directory = new_directory.selectedFiles()[0]
-            self.pdf.open_file(ui_config.current_directory)
-
+            self.open_pdf(new_directory.selectedFiles()[0])
             if self.pdf.status == 0:
-                self.update_config_from_pdf()
-
-                self.page_number_label.setMaxLength(len(str(ui_config.max_page_number)))
-
-                new_page_number = self.bookmark.get_bookmark_page_number(ui_config.current_directory)
-                if new_page_number != -1:
-                    ui_config.current_page_number = new_page_number
-                self.update_page_displays()
-
-                self.page_number_label.setText(str(ui_config.current_page_number))
-                self.page_limit_label.setText(str(ui_config.max_page_number))
                 return 0
+        
+        #If unsuccessful, return -1 to not go to the "main page" (from home page)
         return -1
 
     def bookmark_clicked(self):
@@ -319,8 +303,32 @@ class PDF_Viewer_App(QWidget):
         else:
             self.bookmark.add_bookmark_data(directory, ui_config.current_page_number)
             QMessageBox.warning(self, "Bookmark Information", "Bookmark added.")
+        self.update_bookmark_icon(directory)
 
-    def exec_open_pdf(self, directory):
+    """
+    Extra functions for use.
+    """
+    def update_config_from_pdf(self):
+        ui_config.update_zoom_lim(self.size())
+        ui_config.current_page_number = 1
+        ui_config.max_page_number = self.pdf.get_max_pages()
+
+    def update_page_displays(self):
+        self.page_display_1.clear(); self.page_display_2.clear()
+        page_number = ui_config.current_page_number-1
+        page_1 = self.pdf.get_page_pixmap(page_number*2, ui_config.dpi_zoom)
+        page_2 = self.pdf.get_page_pixmap(page_number*2+1, ui_config.dpi_zoom)
+        if page_1:
+            self.page_display_1.setPixmap(page_1)
+        if page_2:
+            self.page_display_1.setAlignment(Qt.AlignmentFlag.AlignRight | Qt.AlignmentFlag.AlignVCenter)
+            self.page_display_2.setVisible(True)
+            self.page_display_2.setPixmap(page_2)
+        else:
+            self.page_display_1.setAlignment(Qt.AlignmentFlag.AlignCenter)
+            self.page_display_2.setVisible(False)
+
+    def open_pdf(self, directory):
         ui_config.current_directory = directory
         self.pdf.open_file(ui_config.current_directory)
 
@@ -337,10 +345,25 @@ class PDF_Viewer_App(QWidget):
             self.page_number_label.setText(str(ui_config.current_page_number))
             self.page_limit_label.setText(str(ui_config.max_page_number))
 
-    def wheelEvent(self, event):
-        if not self.ctrl_press:
-            return
-        delta = event.angleDelta().y()
+            self.update_bookmark_icon(directory)
+
+    def update_bookmark_icon(self, directory):
+        if self.bookmark.directory_exists(directory):
+            bookmark_pixmap = QPixmap(os.path.join(base_directory, "icons/bookmarked.png"))
+            bookmark_icon = QIcon(bookmark_pixmap)
+            self.bookmark_button.setIcon(bookmark_icon)
+        else:
+            bookmark_pixmap = QPixmap(os.path.join(base_directory, "icons/bookmark.png"))
+            bookmark_icon = QIcon(bookmark_pixmap)
+            self.bookmark_button.setIcon(bookmark_icon)
+
+    def exec_open_pdf_from_windows(self, directory):
+        self.open_pdf(directory)
+
+    """
+    Helper Functions
+    """
+    def zoom_page_scroll(self, delta):
         if delta > 0:
             self.increment_page_zoom()
         else:
@@ -357,17 +380,22 @@ class HomePage(QWidget):
         self.design_layouts()
         self.connect_events()
 
+    """
+    Main UI Functionality: Creating Widgets, designing them, designing layouts and connecting PyQT events (through PyQT slots.)
+    """
     def create_widgets(self):
         self.header_label = QLabel("hello there!")
         self.open_file_button = QPushButton("open pdf")
         self.quit_button = QPushButton("quit")
 
     def design_widgets(self):
+        # Modify Widgets
         self.header_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
 
         self.open_file_button.setFixedSize(100, 25)
         self.quit_button.setFixedSize(100, 25)
 
+        # Style Sheet Setting for Widgets
         self.open_file_button.setStyleSheet(
             """
             QPushButton {
@@ -408,11 +436,20 @@ class HomePage(QWidget):
     def connect_events(self):
         self.quit_button.clicked.connect(self.quit_button_clicked)
 
+    """
+    Custom Events that are used to slot an event for specific PyQT widgets like QPushButton/QLineEdit
+    """
     def quit_button_clicked(self):
         quit()
 
     # event functions here
 
+"""
+Main Window:
+- Holds HomePage Widget
+- Holds PDF_Viewer_App Widget
+Main Runner to run all other functionalities.
+"""
 class Runner_App(QWidget):
     def __init__(self):
         super().__init__()
@@ -435,10 +472,12 @@ class Runner_App(QWidget):
         self.pages.setCurrentIndex(0)
         self.setLayout(self.main_layout)
 
+        # If we used the "Open with..." feature on windows, then open the PDF directly and skip to the main page.
         if len(argv) > 1:
             self.directory = argv[1]
             self.exec_open_pdf()
             
+    # Direct calls to PDF App.
     def exec_open_pdf(self):
         self.pdf_app.exec_open_pdf(self.directory)
         self.pages.setCurrentIndex(1)
@@ -448,6 +487,9 @@ class Runner_App(QWidget):
         if status == 0:
             self.pages.setCurrentIndex(1)
 
+"""
+str_find_backwards attempts to find the character/string "find" in string starting at the end and working backwards.
+"""
 def str_find_backwards(string, find):
     for i in range(len(string)-1, -1, -1):
         if string[i] == find:
@@ -460,4 +502,3 @@ main_window = Runner_App()
 main_window.show()
 
 app.exec()
-

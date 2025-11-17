@@ -1,4 +1,3 @@
-#https://stackoverflow.com/questions/6648493/how-to-open-a-file-for-both-reading-and-writing
 import os
 
 """
