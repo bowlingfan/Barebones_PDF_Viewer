@@ -5,6 +5,7 @@ Some extra features are supported as well:
 - Page turning with keyboard controls (through pressing the left/right arrow keys or the A, D keys).
 - Zooming in and zooming out with LCTRL + Scroll Wheel.
 - Opening PDFs directly from File Explorer (through Open With... and clicking the option to always open PDF files with this program.)
+- Bookmarking to save where you left off, so that when you reopen the PDF it goes exactly back to the page where you bookmarked.
 
 This was created with PyQT (for User Interfaces) and PyMuPDF (for reading the PDF).
 
