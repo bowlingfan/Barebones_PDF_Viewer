@@ -16,10 +16,12 @@ from PyQt6.QtWidgets import (
 from PyQt6.QtCore import Qt, QSize
 from PyQt6.QtGui import QTransform, QPixmap, QIcon, QPalette, QColor
 from sys import argv
+import os
 import ui_config as uic #ui_config.py
 import pdf_reader as pdf_r #pdf_reader.py
 import bookmark as pdf_b
 
+base_directory = os.path.dirname(__file__)
 ui_config = uic.UI_Config
 
 class LogoPushButton(QPushButton):
@@ -113,10 +115,10 @@ class PDF_Viewer_App(QWidget):
         self.rotate_left_button.setToolTip("Rotate Page Left by 90°")
         self.rotate_right_button.setToolTip("Rotate Page Right by 90°")
 
-        open_file_pixmap = QPixmap("icons/open_file.png")
-        bookmark_pixmap = QPixmap("icons/bookmark.png")
-        rotate_left_pixmap = QPixmap("icons/rotate_left.png")
-        rotate_right_pixmap = QPixmap("icons/rotate_right.png")
+        open_file_pixmap = QPixmap(os.path.join(base_directory, "icons/open_file.png"))
+        bookmark_pixmap = QPixmap(os.path.join(base_directory, "icons/bookmark.png"))
+        rotate_left_pixmap = QPixmap(os.path.join(base_directory, "icons/rotate_left.png"))
+        rotate_right_pixmap = QPixmap(os.path.join(base_directory, "icons/rotate_right.png"))
 
         open_file_icon = QIcon(open_file_pixmap)
         bookmark_icon = QIcon(bookmark_pixmap)
@@ -434,7 +436,7 @@ def str_find_backwards(string, find):
     return -1
 
 app = QApplication([])
-app.setWindowIcon(QIcon('pdf.ico'))
+app.setWindowIcon(QIcon(os.path.join(base_directory, 'icons/pdf.ico')))
 main_window = Runner_App()
 main_window.show()
 
