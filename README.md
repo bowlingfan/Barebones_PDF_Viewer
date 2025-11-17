@@ -13,7 +13,7 @@ There is a current bug if you attempt to "Open With" this program for the first 
 * [QT](https://www.qt.io/), a package meant for creating User Interfaces.
 * [PyMuPDF](https://mupdf.com/pymupdf), a package allowing the ability to read PDFs.
 
-<img width="300" height="781" alt="view1" src="https://github.com/user-attachments/assets/c328f7c5-5edc-47e3-ac7c-2b00fd3f9a86" />
-<img width="300" height="775" alt="view2" src="https://github.com/user-attachments/assets/255163ef-72cb-4acb-b978-b0825bd67de5" />
+<img width="350" height="781" alt="view1" src="https://github.com/user-attachments/assets/c328f7c5-5edc-47e3-ac7c-2b00fd3f9a86" />
+<img width="350" height="775" alt="view2" src="https://github.com/user-attachments/assets/255163ef-72cb-4acb-b978-b0825bd67de5" />
 
 
