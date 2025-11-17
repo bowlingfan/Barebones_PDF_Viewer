@@ -1,4 +1,4 @@
-# Custom PDF Viewer
+# Custom Barebones PDF Viewer
 Barebones PDF Viewer that attempts to simplify the User Interface of viewing a PDF. Includes the most basic features such as zooming, rotating, and opening a new pdf. 
 Some extra features are supported as well:
 - Editing the current page number by hovering, clicking, and typing a new number.
