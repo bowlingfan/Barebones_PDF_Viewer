@@ -479,7 +479,7 @@ class Runner_App(QWidget):
             
     # Direct calls to PDF App.
     def exec_open_pdf(self):
-        self.pdf_app.exec_open_pdf(self.directory)
+        self.pdf_app.exec_open_pdf_from_windows(self.directory)
         self.pages.setCurrentIndex(1)
 
     def open_file_button_clicked(self):
