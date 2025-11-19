@@ -10,7 +10,7 @@ Some extra features are supported as well:
 This was created with PyQT6 (for User Interfaces) and PyMuPDF (for reading the PDF).
 
 ## Notes
-There is a current bug if you attempt to "Open With" this program for the first time (_It is recommended to checkmark the box stating to "always open .PDF files with this program"_), which it will throw an error stating that a text file's permission for access is denied. I am not sure on how to fix this bug, but the program should still run fine if you just open the pdf file itself (double clicking it).
+There is a current bug if you attempt to "Open With" this program for the first time (_It is recommended to checkmark the box stating to "always open .PDF files with this program"_), which it will throw an error stating that a text file's permission for access is denied. I am not sure on how to fix this bug, but the program should still run fine if you just open the pdf file itself (double clicking it). This issue is open in https://github.com/bowlingfan/Barebones_PDF_Viewer/issues/2.
 <p align="center">
   <img width="378" height="333" alt="unexpected" src="https://github.com/user-attachments/assets/654f7853-5f57-42c8-9ebc-555e58f6c7fe" />
 </p>
