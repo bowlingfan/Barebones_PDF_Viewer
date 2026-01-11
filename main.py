@@ -102,10 +102,10 @@ class PDF_Viewer_App(QWidget):
         self.rotate_left_button.setToolTip("Rotate Page Left by 90°")
         self.rotate_right_button.setToolTip("Rotate Page Right by 90°")
 
-        open_file_pixmap = QPixmap(os.path.join(base_directory, "icons/open_file.png"))
-        bookmark_pixmap = QPixmap(os.path.join(base_directory, "icons/bookmark.png"))
-        rotate_left_pixmap = QPixmap(os.path.join(base_directory, "icons/rotate_left.png"))
-        rotate_right_pixmap = QPixmap(os.path.join(base_directory, "icons/rotate_right.png"))
+        open_file_pixmap = QPixmap(os.path.join(base_directory, "open_file.png"))
+        bookmark_pixmap = QPixmap(os.path.join(base_directory, "bookmark.png"))
+        rotate_left_pixmap = QPixmap(os.path.join(base_directory, "rotate_left.png"))
+        rotate_right_pixmap = QPixmap(os.path.join(base_directory, "rotate_right.png"))
 
         open_file_icon = QIcon(open_file_pixmap)
         bookmark_icon = QIcon(bookmark_pixmap)
@@ -349,11 +349,11 @@ class PDF_Viewer_App(QWidget):
 
     def update_bookmark_icon(self, directory):
         if self.bookmark.directory_exists(directory):
-            bookmark_pixmap = QPixmap(os.path.join(base_directory, "icons/bookmarked.png"))
+            bookmark_pixmap = QPixmap(os.path.join(base_directory, "bookmarked.png"))
             bookmark_icon = QIcon(bookmark_pixmap)
             self.bookmark_button.setIcon(bookmark_icon)
         else:
-            bookmark_pixmap = QPixmap(os.path.join(base_directory, "icons/bookmark.png"))
+            bookmark_pixmap = QPixmap(os.path.join(base_directory, "bookmark.png"))
             bookmark_icon = QIcon(bookmark_pixmap)
             self.bookmark_button.setIcon(bookmark_icon)
 
@@ -475,6 +475,7 @@ class Runner_App(QWidget):
         # If we used the "Open with..." feature on windows, then open the PDF directly and skip to the main page.
         if len(argv) > 1:
             self.directory = argv[1]
+            self.directory = self.directory.replace("\\", '/')
             self.exec_open_pdf()
             
     # Direct calls to PDF App.
@@ -497,7 +498,7 @@ def str_find_backwards(string, find):
     return -1
 
 app = QApplication([])
-app.setWindowIcon(QIcon(os.path.join(base_directory, 'icons/pdf.ico')))
+app.setWindowIcon(QIcon(os.path.join(base_directory, 'pdf.ico')))
 main_window = Runner_App()
 main_window.show()
 

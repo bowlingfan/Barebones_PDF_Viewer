@@ -1,17 +1,20 @@
-import os
-
+import os,inspect
 """
 bookmark data from txt_file:
 directory = NUMBER
 """
+
+filename = inspect.getframeinfo(inspect.currentframe()).filename
+data_path = os.path.dirname(os.path.abspath(filename))
+
 class PDF_Bookmark():
     text_file_link = "bookmark_data.txt"
     bookmarks = {}
 
     def __init__(self):
         self.bookmark_data = None
-        if not os.path.isfile(PDF_Bookmark.text_file_link):
-            self.bookmark_data = open(PDF_Bookmark.text_file_link, "w")
+        if not os.path.isfile(os.path.join(data_path, PDF_Bookmark.text_file_link)):
+            self.bookmark_data = open(os.path.join(data_path, PDF_Bookmark.text_file_link), "w")
             self.bookmark_data.close()
         self.import_bookmark_data()
 
@@ -20,7 +23,7 @@ class PDF_Bookmark():
         self.bookmark_data = None
 
     def import_bookmark_data(self):
-        self.bookmark_data = open(PDF_Bookmark.text_file_link, "r")
+        self.bookmark_data = open(os.path.join(data_path, PDF_Bookmark.text_file_link), "r")
 
         for cline in self.bookmark_data.readlines():
             line = cline.strip('\n')
@@ -34,7 +37,8 @@ class PDF_Bookmark():
         self.bookmark_data.close()
     
     def add_bookmark_data(self, directory, page_number):
-        self.bookmark_data = open(PDF_Bookmark.text_file_link, "a")
+        directory = directory.replace("\\", '/')
+        self.bookmark_data = open(os.path.join(data_path, PDF_Bookmark.text_file_link), "a")
 
         self.bookmark_data.write(f"{directory} = {page_number}\n")
         PDF_Bookmark.bookmarks.update({directory: page_number})
@@ -42,8 +46,9 @@ class PDF_Bookmark():
         self.bookmark_data.close()
 
     def remove_bookmark_data(self, directory):
+        directory = directory.replace("\\", '/')
         if self.directory_exists(directory):
-            self.bookmark_data = open(PDF_Bookmark.text_file_link, "w")
+            self.bookmark_data = open(os.path.join(data_path, PDF_Bookmark.text_file_link), "w")
 
             PDF_Bookmark.bookmarks.pop(directory)
             self.bookmark_data.truncate(0)
@@ -57,6 +62,7 @@ class PDF_Bookmark():
         return directory in PDF_Bookmark.bookmarks
 
     def get_bookmark_page_number(self, directory):
+        directory = directory.replace("\\", '/')
         if self.directory_exists(directory):
             return PDF_Bookmark.bookmarks[directory]
         else:
