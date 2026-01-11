@@ -4,16 +4,10 @@ Some extra features are supported as well:
 - Editing the current page number by hovering, clicking, and typing a new number.
 - Page turning with keyboard controls (through pressing the left/right arrow keys or the A, D keys).
 - Zooming in and zooming out with LCTRL + Scroll Wheel.
-- Opening PDFs directly from File Explorer (through Open With... and clicking the option to always open PDF files with this program.)
+- Opening PDFs directly from File Explorer
 - Bookmarking to save where you left off, so that when you reopen the PDF it goes exactly back to the page where you bookmarked.
 
 This was created with PyQT6 (for User Interfaces) and PyMuPDF (for reading the PDF).
-
-## Notes
-There is a current bug if you attempt to "Open With" this program for the first time (_It is recommended to checkmark the box stating to "always open .PDF files with this program"_), which it will throw an error stating that a text file's permission for access is denied. I am not sure on how to fix this bug, but the program should still run fine if you just open the pdf file itself (double clicking it). This issue is open in https://github.com/bowlingfan/Barebones_PDF_Viewer/issues/2.
-<p align="center">
-  <img width="378" height="333" alt="unexpected" src="https://github.com/user-attachments/assets/654f7853-5f57-42c8-9ebc-555e58f6c7fe" />
-</p>
 
 ## Credits
 * [QT](https://www.qt.io/), a package meant for creating User Interfaces.
